@@ -168,6 +168,10 @@ RUN sudo apt-get update \
  RUN wget https://files.magerun.net/n98-magerun2.phar \
      && chmod +x ./n98-magerun2.phar \
      && sudo mv ./n98-magerun2.phar /usr/local/bin/n98-magerun2
+
+ RUN wget https://files.magerun.net/n98-magerun2-5.2.0.phar \
+     && chmod +x ./n98-magerun2-5.2.0.phar \
+     && sudo mv ./n98-magerun2-5.2.0.phar /usr/local/bin/n98-magerun2-5.2.0
      
 #Install APCU
 RUN echo "apc.enable_cli=1" > /etc/php/7.4/cli/conf.d/20-apcu.ini
