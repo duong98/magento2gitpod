@@ -1,0 +1,172 @@
+
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var Grid $block */
+
+use Magento\Framework\Exception\LocalizedException;
+use Magezon\Composer\Block\Packages\Grid;
+
+?>
+
+<div class="block block-packages-list">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Composer Packages')) ?></strong></div>
+    <div class="block-content">
+        <?php try {
+    if ($_packages = $block->getAdditionalPackages()) : ?>
+
+                <div class="table-wrapper additional-packages">
+                    <p>
+                        Add magezon composer repository to your site :
+                        <div class="generated-keys">
+                            <code class="access-key">
+                                <strong>composer config repositories.magezon composer <?= $block->getComposerRepositoryUrl() ?></strong>
+                            </code>
+                            <a class="copy-access-key-public"> Copy</a>
+                        </div>
+                    </p>
+                    <br>
+                    <p>
+                        Configure magezon repository with your access keys :
+                        <div class="generated-keys">
+                            <code class="access-key">
+                                <strong>composer config --auth http-basic.composer.magezon.com $COMPOSER_MAGEZON_USERNAME $COMPOSER_MAGEZON_PASSWORD</strong>
+                            </code>
+                            <a class="copy-access-key-public"> Copy</a>
+                        </div>
+                        <br>
+                        <p>
+                        Where <code><strong>$COMPOSER_MAGEZON_USERNAME</strong></code> is the <em>Public Key </em>
+                         and <code><strong>$COMPOSER_MAGEZON_PASSWORD</strong></code> is the <em>Private Key .</em><br>
+                        Go <a href="<?= $block->escapeUrl($block->getUrl("composer/accesskeys")) ?>">Here </a> to create your access keys if you don't have them yet
+                        </p>
+                    </p>
+                    <p>
+                        Click each package below to see how to install specific package version .
+                    </p>
+                    <table class="data table table-additional-packages-items history"
+                           id="additional-packages-table">
+                        <caption class="table-caption"><?= $block->escapeHtml(__('Packages List')) ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col packages"><?= $block->escapeHtml(__('Package Name')) ?></th>
+                            <th scope="col" class="col composer"><?= $block->escapeHtml(__('Composer Name')) ?></th>
+                            <th scope="col" class="col version"><?= $block->escapeHtml(__('Latest Version')) ?></th>
+                            <th scope="col" class="col country"><?= $block->escapeHtml(__('Status'))?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($_packages as $package) : ?>
+                            <tr>
+                                <td data-th="<?= $block->escapeHtml(__('Package Name'))?>" class="col packages">
+                                    <div class="field">
+                                        <span class="tooltip">
+                                            <a class="action primary tooltip-toggle" data-trigger="trigger-<?= $package->getData('id')?>">
+                                                <?= $block->escapeHtml($package->getData('description')) ?>
+                                            </a>
+                                            <span class="tooltip-content"><?= $block->escapeHtml(__('Click to see available versions')) ?></span>
+                                        </span>
+                                    </div>
+                                    <div data-bind="mageInit: {
+                                            'Magento_Ui/js/modal/modal':{
+                                                'type': 'popup',
+                                                'title': 'Versions List',
+                                                'trigger': '[data-trigger=trigger-<?= $package->getData('id')?>]',
+                                                'responsive': true
+                                            }}">
+                                        <div class="content">
+                                            <div class="block block-versions-list">
+                                                <div class="block-title"><strong><?= $block->escapeHtml(__('Package Versions')) ?></strong></div>
+                                                <div class="block-content">
+                                                    <?php
+                                                    if ($_versions = $block->getAdditionalVersions($package->getData('id'))) : ?>
+                                                        <div class="table-wrapper additional-versions">
+                                                            <table class="data table table-additional-versions-items history"
+                                                                   id="additional-versions-table">
+                                                                <caption class="table-caption"><?= $block->escapeHtml(__('Versions List')) ?></caption>
+                                                                <thead>
+                                                                <tr>
+                                                                    <th scope="col" class="col versions"><?= $block->escapeHtml(__('Version No.')) ?></th>
+                                                                    <th scope="col" class="col status"><?= $block->escapeHtml(__('Status'))?></th>
+                                                                    <th scope="col" class="col date"><?= $block->escapeHtml(__('Release Date')) ?></th>
+                                                                    <th scope="col" class="col note"><?= $block->escapeHtml(__('Release Note')) ?></th>
+                                                                    <th scope="col" class="col installation"><?= $block->escapeHtml(__('Installation')) ?></th>
+                                                                    <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <?php foreach ($_versions as $version) : ?>
+                                                                    <tr>
+                                                                        <td data-th="<?= $block->escapeHtml(__('Version No.'))?>" class="col versions">
+                                                                            <?= $block->escapeHtml($version->getData('version')) ?>
+                                                                        </td>
+                                                                        <td data-th="<?= $block->escapeHtml(__('Status'))?>" class="col status">
+                                                                            <?= $block->escapeHtml($version->getData('status') == 1 ? "Enabled" : "Disabled")?>
+                                                                        </td>
+                                                                        <td data-th="<?= $block->escapeHtml(__('Release Date'))?>" class="col date">
+                                                                            <?= $block->escapeHtml((new DateTime($version->getData('created_at')))->format("Y-m-d")) ?>
+                                                                        </td>
+                                                                        <td data-th="<?= $block->escapeHtml(__('Release Note'))?>" class="col status">
+                                                                            <?= $block->escapeHtml($version->getData('note'))?>
+                                                                        </td>
+                                                                        <td data-th="<?= $block->escapeHtml(__('Installation'))?>" class="col installation">
+                                                                            <div class="generated-keys">
+                                                                                <code class="access-key">composer require magezon/module-<?= $block->escapeHtml($package->getData('name')) ?>:<?= $block->escapeHtml($version->getData('version')) ?></code>
+                                                                                <a class="copy-access-key-public"> Copy</a>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                                                            <a class="action edit" href="<?= $block->escapeUrl($block->getVersionDownloadUrl($version->getData('id'))) ?>">
+                                                                                <span><?= $block->escapeHtml(__('Download')) ?></span>
+                                                                            </a>
+                                                                            <a class="action edit" href="<?= $block->escapeUrl($version->getData('guide')) ?>">
+                                                                                <span><?= $block->escapeHtml(__('User Guide')) ?></span>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    <?php else : ?>
+                                                    <p class="empty"><?= $block->escapeHtml(__('There is currently no version of this package')) ?></p>
+                                                    <?php endif ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Package Composer Name')) ?>" class="col composer">
+                                    <?= $block->escapeHtml($package->getData('name')) ?>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Version'))?>" class="col version">
+                                    <?= $block->escapeHtml($package->getData('version')) ?>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Status'))?>"
+                                    class="col status"><?= $block->escapeHtml($package->getData('status') == 1 ? "Enabled" : "Disabled")?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php if ($block->getChildHtml('pager')) : ?>
+                    <div class="customer-packages-toolbar toolbar bottom"><?= $block->getChildHtml('pager') ?></div>
+                <?php endif ?>
+            <?php else : ?>
+                <p class="empty"><?= $block->escapeHtml(__('You have not yet created an access key.')) ?></p>
+            <?php endif;
+} catch (LocalizedException $e) {
+} ?>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        ".page-main": {
+            "accesskeys": {}
+        }
+    }
+</script>

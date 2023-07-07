@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+<!--    <route url="/V1/accesskeys/accessKey/:auth/accessSecret/:secret/packageName/:pName" method="GET">-->
+<!--        <service class="Magezon\Composer\Api\CustomerPackagesRepositoryInterface" method="checkAuth" />-->
+<!--        <resources>-->
+<!--            &lt;!&ndash; <resource ref="Magezon_Composer::accesskeys_get" /> &ndash;&gt;-->
+<!--            <resource ref="anonymous" />-->
+<!--        </resources>-->
+<!--    </route>-->
+    <route url="/V1/packages/accessKey/:auth/accessSecret/:secret" method="GET">
+        <service class="Magezon\Composer\Api\CustomerPackagesRepositoryInterface" method="getAuthListByKeys" />
+        <resources>
+             <resource ref="Magezon_Composer::packages_get" />
+<!--            <resource ref="anonymous" />-->
+        </resources>
+    </route>
+    <route url="/V1/packages" method="POST">
+        <service class="Magezon\Composer\Api\PackagesRepositoryInterface" method="updatePackageVersion" />
+        <resources>
+             <resource ref="Magezon_Composer::package_post" />
+<!--            <resource ref="anonymous" />-->
+        </resources>
+    </route>
+    <route url="/V1/versions" method="POST">
+        <service class="Magezon\Composer\Api\VersionRepositoryInterface" method="saveVersions" />
+        <resources>
+             <resource ref="Magezon_Composer::versions_post" />
+<!--            <resource ref="anonymous" />-->
+        </resources>
+    </route>
+</routes>

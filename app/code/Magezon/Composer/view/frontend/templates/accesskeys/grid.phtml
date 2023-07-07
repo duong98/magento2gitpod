@@ -1,0 +1,101 @@
+
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var Grid $block */
+
+use Magento\Framework\Exception\LocalizedException;
+use Magezon\Composer\Block\AccessKeys\Grid;
+
+$_accessKeys = $block->getAdditionalAccessKeys();
+?>
+
+<div class="block block-accesskeys-list">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Access Keys List')) ?></strong></div>
+    <div class="block-content">
+        <?php try {
+    if ($_accessKeys) : ?>
+
+        <div class="table-wrapper additional-accesskeys">
+                    <p>
+                        These keys can be used for authorized downloads of Magezon extensions and themes.
+                        Check My Packages menu for further details
+                    </p>
+                    <table class="data table table-additional-accesskeys-items history"
+                           id="additional-accesskeys-table">
+                                                <caption class="table-caption"><?= $block->escapeHtml(__('Access Keys List')) ?></caption>
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col" class="col name"><?= $block->escapeHtml(__('Name')) ?></th>
+                                                    <th scope="col" class="col accesskeys"><?= $block->escapeHtml(__('Access Keys')) ?></th>
+                                                    <th scope="col" class="col country"><?= $block->escapeHtml(__('Status'))?></th>
+                                                    <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php foreach ($_accessKeys as $accessKey) : ?>
+                                                    <tr>
+                                                        <td data-th="<?= $block->escapeHtml(__('Name')) ?>"
+                                                            class="col name"><?= $block->escapeHtml($accessKey->getName()) ?></td>
+                                                        <td data-th="<?= $block->escapeHtml(__('Access Keys'))?>" class="col accesskeys">
+                                                            <div class="generated-keys">
+                                                                Public Key: <span class="access-key">
+                                            <?= $block->escapeHtml($accessKey->getData("access_key")) ?></span><a class="copy-access-key-public"> Copy</a>
+                                                            </div>
+                                                            <div class="generated-keys">
+                                                                Private Key: <span class="access-key">
+                                            <?= $block->escapeHtml($accessKey->getData("access_secret")) ?></span><a class="copy-access-key-private"> Copy</a>
+                                                            </div>
+                                                        </td>
+                                                        <td data-th="<?= $block->escapeHtml(__('Status'))?>"
+                                                            class="col status"><?= $block->escapeHtml($accessKey->getStatus() == 1 ? "Enabled" : "Disabled")?></td>
+                                                        <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                                            <a class="action edit" href="#" role="<?= $accessKey->getStatus() == 1 ? 'disable-accesskey' : 'enable-accesskey'?>"
+                                                               data-accesskey="<?= $block->escapeHtmlAttr($accessKey->getId()) ?>"><span><?= $accessKey->getStatus() == 1 ? $block->escapeHtml(__('Disable')) : $block->escapeHtml(__('Enable')) ?></span></a>
+                                                            <a class="action delete" href="#" role="delete-accesskey"
+                                                               data-accesskey="<?= $block->escapeHtmlAttr($accessKey->getId()) ?>"><span><?= $block->escapeHtml(__('Delete')) ?></span></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                                </tbody>
+                    </table>
+                </div>
+                <?php if ($block->getChildHtml('pager')) : ?>
+                    <div class="customer-accesskeys-toolbar toolbar bottom"><?= $block->getChildHtml('pager') ?></div>
+                <?php endif ?>
+            <?php else : ?>
+                <p class="empty"><?= $block->escapeHtml(__('You have not yet created an access key.')) ?></p>
+            <?php endif;
+} catch (LocalizedException $e) {
+} ?>
+    </div>
+</div>
+<?php if ($_accessKeys->count() < $block->getMaxAllowedKeysConfig()) : ?>
+<div class="actions-toolbar">
+    <div class="primary">
+        <button type="button" role="add-accesskey" title="<?= $block->escapeHtmlAttr(__('Add New Access Key')) ?>" class="action primary add"><span><?= $block->escapeHtml(__('Add New Access Key')) ?></span></button>
+    </div>
+    <div class="secondary">
+        <a class="action back" href="<?= $block->escapeUrl($block->getUrl('customer/accesskeys')) ?>"><span><?= $block->escapeHtml(__('Back')) ?></span></a>
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        ".page-main": {
+            "accesskeys": {
+                "deleteAccessKey": "td a[role='delete-accesskey']",
+                "enableAccessKey": "td a[role='enable-accesskey']",
+                "disableAccessKey": "td a[role='disable-accesskey']",
+                "deleteUrlPrefix": "<?= $block->escapeJs($block->escapeUrl($block->getDeleteUrl())) ?>id/",
+                "enableUrlPrefix": "<?= $block->escapeJs($block->escapeUrl($block->getAccessKeyEnableUrl())) ?>id/",
+                "disableUrlPrefix": "<?= $block->escapeJs($block->escapeUrl($block->getAccessKeyDisableUrl())) ?>id/",
+                "addAccessKey": "button[role='add-accesskey']",
+                "addAccessKeyLocation": "<?= $block->escapeJs($block->escapeUrl($block->getAddAccessKeyUrl())) ?>"
+            }
+        }
+    }
+</script>

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="mgz_package_group" resource="default" engine="innodb" comment="Package Group Table">
+        <column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Group ID"/>
+        <column xsi:type="varchar" name="name" comment="Name"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="group_id"/>
+        </constraint>
+    </table>
+    <table name="mgz_package_accesskeys" resource="default" engine="innodb" comment="Package access Table">
+        <column xsi:type="int" name="access_id" padding="10" unsigned="true" nullable="false" identity="true" comment="access ID"/>
+        <column xsi:type="varchar" name="name" default="default" comment="Name"/>
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" comment="Entity ID"/>
+        <column xsi:type="varchar" name="access_key" comment="access Key"/>
+        <column xsi:type="varchar" name="access_secret" comment ="access Secret"/>
+        <column xsi:type="smallint" name="status" comment ="Status"/>
+        <column xsi:type="datetime" name="created_at" comment ="Created date"/>
+        <column xsi:type="datetime" name="modified_at" comment ="Modified date"/>
+        <column xsi:type="datetime" name="expire_at" comment ="Expire date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="access_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CUSTOMER_RECORDS_ACCESS_KEY_NAME">
+            <column name="name"/>
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="access_customer_id" table="mgz_package_accesskeys" column="entity_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="mgz_package_group_customer" resource="default" engine="innodb" comment="Package Group Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="group_id" padding="10" unsigned="true" nullable="false" comment="Group ID"/>
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" comment="Entity ID"/>
+        <column xsi:type="varchar" name="name" comment="Name"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="group_customer_id" table="mgz_package_group_customer" column="group_id" referenceTable="mgz_package_group" referenceColumn="group_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="customer_id" table="mgz_package_group_customer" column="entity_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="mgz_package_packages" resource="default" engine="innodb" comment="Packages Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="Package ID"/>
+        <column xsi:type="varchar" name="name" default="default" comment="Package Name"/>
+        <column xsi:type="varchar" name="description" default="default" comment="Package Description"/>
+        <column xsi:type="varchar" name="repository_url" default="default" comment="Package Repository URL"/>
+        <column xsi:type="varchar" name="repository_options" default="default" comment="Package Repository Options JSOn"/>
+        <column xsi:type="text" name="package_json" comment="Generated Package JSOM"/>
+        <column xsi:type="varchar" name="version" default="default" comment="Latest Package Version"/>
+        <column xsi:type="varchar" name="sku" default="default" comment="product SKU"/>
+        <column xsi:type="smallint" name="shared_package" default="0" comment="shared package (always available)"/>
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="true" comment="Entity ID"/>
+        <column xsi:type="smallint" name="status" default="1" comment ="Status"/>
+        <column xsi:type="datetime" name="created_at" comment ="Created date"/>
+        <column xsi:type="datetime" name="modified_at" comment ="Modified date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CUSTOMER_RECORDS_PACKAGES_NAME">
+            <column name="name"/>
+            <column name="product_id"/>
+            <column name="description"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="RECORDS_PACKAGES_NAME">
+            <column name="name"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="package_product_id" table="mgz_package_packages" column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <!--    <table name="mgz_package_customer_packages" resource="default" engine="innodb" comment="Customer Packages Table">-->
+    <!--        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>-->
+    <!--        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" comment="Entity ID"/>-->
+    <!--        <column xsi:type="int" name="package_id" unsigned="true" nullable="false" comment="Package ID"/>-->
+    <!--        <column xsi:type="int" name="order_id" unsigned="true" nullable="false" comment="Order ID"/>-->
+    <!--        <column xsi:type="smallint" name="status" comment ="Status"/>-->
+    <!--        <column xsi:type="datetime" name="created_at" comment ="Created date"/>-->
+    <!--        <column xsi:type="datetime" name="modified_at" comment ="Modified date"/>-->
+    <!--        <column xsi:type="varchar" name="last_allowed_version" default="default" comment="Last Allow Version"/>-->
+    <!--        <column xsi:type="datetime" name="last_allowed_date" comment ="Last allow date"/>-->
+    <!--        <constraint xsi:type="primary" referenceId="PRIMARY">-->
+    <!--            <column name="id"/>-->
+    <!--        </constraint>-->
+    <!--        <constraint xsi:type="foreign" referenceId="package_customer_id" table="mgz_package_customer_packages" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>-->
+    <!--        <constraint xsi:type="foreign" referenceId="package_customer_package_id" table="mgz_package_customer_packages" column="package_id" referenceTable="mgz_package_packages" referenceColumn="id" onDelete="CASCADE"/>-->
+    <!--&lt;!&ndash;        <constraint xsi:type="foreign" referenceId="package_customer_order_id" table="mgz_package_customer_packages" column="order_id" referenceTable="sales_invoice" referenceColumn="entity_id" onDelete="CASCADE"/>&ndash;&gt;-->
+    <!--    </table>-->
+    <table name="mgz_package_packages_versions" resource="default" engine="innodb" comment="Customer Packages Table">
+        <column xsi:type="smallint" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="package_id" unsigned="true" nullable="true" comment="Package ID"/>
+        <column xsi:type="varchar" name="version" default="default" comment="Package Version"/>
+        <column xsi:type="varchar" name="version_normalize" default="default" comment="Package Version Normalize"/>
+        <column xsi:type="varchar" name="file" default="default" comment="File name from satis [url][dist]"/>
+        <column xsi:type="varchar" name="zip" nullable="true" comment="Zip file data from uploaded"/>
+        <column xsi:type="varchar" name="note" default="magezon.com" comment="Release Notes"/>
+        <column xsi:type="varchar" name="guide" default="magezon.com" comment="User Guide"/>
+        <column xsi:type="smallint" name="status" default="1" comment ="Status"/>
+        <column xsi:type="datetime" name="created_at" comment ="Created date"/>
+        <column xsi:type="datetime" name="modified_at" comment ="Modified date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="VERSION_RECORDS_PACKAGES_NAME">
+            <column name="package_id"/>
+            <column name="version"/>
+        </constraint>
+        <!--        <constraint xsi:type="foreign" referenceId="package_version_package_id" table="mgz_package_packages_versions" column="package_id" referenceTable="mgz_package_packages" referenceColumn="id" onDelete="CASCADE"/>-->
+        <!--        <constraint xsi:type="foreign" referenceId="package_customer_order_id" table="mgz_package_customer_packages" column="order_id" referenceTable="sales_invoice" referenceColumn="entity_id" onDelete="CASCADE"/>-->
+    </table>
+</schema>

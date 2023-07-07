@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magezon\Composer\Api\AccessKeysRepositoryInterface" type="Magezon\Composer\Model\Api\AccessKeysRepository" />
+    <preference for="Magezon\Composer\Api\Data\AccessKeysSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Magezon\Composer\Api\Data\AccessKeysInterface" type="Magezon\Composer\Model\Api\Data\AccessKeys" />
+    <preference for="Magezon\Composer\Api\Data\PackagesInterface" type="Magezon\Composer\Model\Packages" />
+    <preference for="Magezon\Composer\Api\Data\VersionInterface" type="Magezon\Composer\Model\Packages\Version" />
+    <preference for="Magezon\Composer\Api\Data\CustomerPackagesInterface" type="Magezon\Composer\Model\CustomerPackages" />
+    <preference for="Magezon\Composer\Api\PackagesRepositoryInterface" type="Magezon\Composer\Model\Api\PackagesRepository" />
+    <preference for="Magezon\Composer\Api\VersionRepositoryInterface" type="Magezon\Composer\Model\Api\VersionRepository" />
+    <preference for="Magezon\Composer\Api\CustomerPackagesRepositoryInterface" type="Magezon\Composer\Model\Api\CustomerPackagesRepository" />
+    <preference for="Magezon\Composer\Api\Data\PackagesSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Magezon\Composer\Api\Data\VersionSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Magezon\Composer\Api\Data\CustomerPackagesSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <type name="Magezon\Composer\Model\ZipUploader">
+        <arguments>
+            <!-- Temporary file stored in pub/media/packages/tmp/version -->
+            <argument name="baseTmpPath" xsi:type="string">packages/tmp/zip</argument>
+            <argument name="basePath" xsi:type="string">packages/zip</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="zip" xsi:type="string">zip</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="composer_accesskeys_listing_data_source" xsi:type="string">Magezon\Composer\Model\ResourceModel\AccessKeys\Grid\Collection</item>
+                <item name="composer_packages_listing_data_source" xsi:type="string">Magezon\Composer\Model\ResourceModel\Packages\Grid\Collection</item>
+                <item name="composer_package_listing_data_source" xsi:type="string">Magezon\Composer\Model\ResourceModel\Packages\Grid\Collection</item>
+                <item name="composer_customer_listing_data_source" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection</item>
+                <item name="composer_customerpackages_listing_data_source" xsi:type="string">Magezon\Composer\Model\ResourceModel\CustomerPackages\Grid\Collection</item>
+                <item name="composer_version_listing_data_source" xsi:type="string">Magezon\Composer\Model\ResourceModel\Packages\Version\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Magezon\Composer\Model\ResourceModel\AccessKeys\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mgz_package_accesskeys</argument>
+            <argument name="resourceModel" xsi:type="string">Magezon\Composer\Model\ResourceModel\AccessKeys</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magezon\Composer\Model\ResourceModel\Packages\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mgz_package_packages</argument>
+            <argument name="resourceModel" xsi:type="string">Magezon\Composer\Model\ResourceModel\Packages</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magezon\Composer\Model\ResourceModel\CustomerPackages\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mgz_package_customer_packages</argument>
+            <argument name="resourceModel" xsi:type="string">Magezon\Composer\Model\ResourceModel\CustomerPackages</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magezon\Composer\Model\ResourceModel\Packages\Version\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mgz_package_packages_versions</argument>
+            <argument name="resourceModel" xsi:type="string">Magezon\Composer\Model\ResourceModel\Packages\Version</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magezon\Composer\Ui\DataProvider\AccessKeys\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="default" xsi:type="array">
+                    <item name="class" xsi:type="string">Magezon\Composer\Ui\DataProvider\AccessKeys\Form\Modifier\DefaultData</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magezon\Composer\Ui\DataProvider\Packages\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="default" xsi:type="array">
+                    <item name="class" xsi:type="string">Magezon\Composer\Ui\DataProvider\Packages\Form\Modifier\DefaultData</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magezon\Composer\Ui\DataProvider\Packages\Version\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="default" xsi:type="array">
+                    <item name="class" xsi:type="string">Magezon\Composer\Ui\DataProvider\Packages\Version\Form\Modifier\DefaultData</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magezon\Composer\Ui\DataProvider\AccessKeys\Form\DataProvider">
+        <arguments>
+            <argument name="pool" xsi:type="object">Magezon\Composer\Ui\DataProvider\AccessKeys\Form\Modifier\Pool</argument>
+        </arguments>
+    </type>
+    <type name="Magezon\Composer\Ui\DataProvider\Packages\Form\DataProvider">
+        <arguments>
+            <argument name="pool" xsi:type="object">Magezon\Composer\Ui\DataProvider\Packages\Form\Modifier\Pool</argument>
+        </arguments>
+    </type>
+    <type name="Magezon\Composer\Ui\DataProvider\Packages\Version\Form\DataProvider">
+        <arguments>
+            <argument name="pool" xsi:type="object">Magezon\Composer\Ui\DataProvider\Packages\Version\Form\Modifier\Pool</argument>
+        </arguments>
+    </type>
+</config>

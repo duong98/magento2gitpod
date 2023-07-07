@@ -1,0 +1,66 @@
+
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var Grid $block */
+
+use Magento\Framework\Exception\LocalizedException;
+use Magezon\Composer\Block\Packages\Versions\Grid;
+
+?>
+
+<div class="block block-versions-list">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Package Versions')) ?></strong></div>
+    <div class="block-content">
+        <?php try {
+    if ($_versions = $block->getAdditionalVersions($block->getRequest()->getParam('package_id'))) : ?>
+
+                <div class="table-wrapper additional-versions">
+                    <table class="data table table-additional-versions-items history"
+                           id="additional-versions-table">
+                        <caption class="table-caption"><?= $block->escapeHtml(__('Versions List')) ?></caption>
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col versions"><?= $block->escapeHtml(__('Version No.')) ?></th>
+                            <th scope="col" class="col status"><?= $block->escapeHtml(__('Status'))?></th>
+                            <th scope="col" class="col date"><?= $block->escapeHtml(__('Created Date')) ?></th>
+                            <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($_versions as $version) : ?>
+                            <tr>
+                                <td data-th="<?= $block->escapeHtml(__('Version No.'))?>" class="col versions">
+                                    <a href="<?= $block->escapeUrl($block->getVersionInfoUrl($version->getData('id'))) ?>">
+                                        <?= $block->escapeHtml($version->getData('version')) ?>
+                                    </a>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Status'))?>" class="col status">
+                                    <?= $block->escapeHtml($version->getData('status') == 1 ? "Enabled" : "Disabled")?>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Release Date'))?>" class="col date">
+                                    <?= $block->escapeHtml((new DateTime($version->getData('created_at')))->format("Y-m-d")) ?>
+                                </td>
+                                <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                    <a class="action edit" href="<?= $block->escapeUrl($block->getVersionDownloadUrl($version->getData('id'))) ?>">
+                                        <span><?= $block->escapeHtml(__('Download')) ?></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php if ($block->getChildHtml('pager')) : ?>
+                    <div class="customer-versions-toolbar toolbar bottom"><?= $block->getChildHtml('pager') ?></div>
+                <?php endif ?>
+            <?php else : ?>
+                <p class="empty"><?= $block->escapeHtml(__('You have not yet created an access key.')) ?></p>
+            <?php endif;
+} catch (LocalizedException $e) {
+} ?>
+    </div>
+</div>

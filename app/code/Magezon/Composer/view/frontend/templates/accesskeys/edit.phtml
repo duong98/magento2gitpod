@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var Magezon\Composer\Block\AccessKeys\Edit $block */
+
+?>
+<form id="keys_generation_form" name="keys_generation_form" novalidate="novalidate" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>" method="post" data-mage-init='{"validation": {"rules": {"prompt-field": {"required":true, "maxlength":25}}}}'>
+    <label for="prompt-field">Key Name:</label>
+    <input size="20" data-role="promptField" id="prompt-field" name="name" class="admin__control-text" type="text" data-validate="{&quot;required&quot;:true,&quot;no-whitespace&quot;:true,&quot;validate-input-unique-key&quot;:true,}">
+    <div class="actions-toolbar" style="margin-top: 15px">
+        <div class="primary">
+            <button type="submit" role="add-new-accesskey" title="<?= $block->escapeHtmlAttr(__('Create Key')) ?>" class="action submit primary"><span><?= $block->escapeHtml(__('Create Key')) ?></span></button>
+        </div>
+        <div class="secondary">
+            <a class="action" href="<?= $block->escapeUrl($block->getUrl('composer/accesskeys')) ?>"><span><?= $block->escapeHtml(__('Cancel')) ?></span></a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,90 @@
+
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var Edit $block */
+
+use Magento\Framework\Exception\LocalizedException;
+use Magezon\Composer\Block\Packages\Versions\Edit;
+
+try {
+    if ($version = $block->getVersion($block->getRequest()->getParam('version_id'))) : ?>
+        <form>
+            <fieldset class="fieldset" style="clear: left;float: left; width: 48%">
+                <legend class="legend">
+                    <span>
+                        <?= $block->escapeHtml(__('General')) ?></span>
+                    </span>
+                </legend><br>
+                <div class="field field-name required">
+                    <label for="package_name" class="label">
+                        <span><?= $block->escapeHtml(__('Package Name')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                               readonly
+                               class="input-text"
+                               title="<?= $block->escapeHtml(__('Package Name')) ?>"
+                               value="<?= $version->getData('name') ?>">
+                    </div>
+                </div>
+                <div class="field field-version required" style="margin-bottom: 2px">
+                    <label for="version" class="label">
+                        <span><?= $block->escapeHtml(__('Version No.')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                               readonly
+                               class="input-text"
+                               title="<?= $block->escapeHtml(__('Version No')) ?>"
+                               value="<?= $version->getData('version') ?>">
+                    </div>
+                </div>
+                <div class="field">
+                    <a href="<?= $block->escapeUrl($block->getVersionDownloadUrl($version->getData('id'))) ?>" class="action edit">
+                        <span><?= $block->escapeHtml(__('Download')) ?></span>
+                    </a>
+                </div>
+                <div class="field field-date required">
+                    <label for="version" class="label">
+                        <span><?= $block->escapeHtml(__('Release date')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="date"
+                               readonly
+                               class="input-date"
+                               title="<?= $block->escapeHtml(__('Release date')) ?>"
+                               value="<?= (new DateTime($version->getData('created_at')))->format("Y-m-d") ?>">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="fieldset" style="float: right; width: 48%">
+                <legend class="legend">
+                    <span>
+                        <?= $block->escapeHtml(__('Others')) ?></span>
+                    </span>
+                </legend><br>
+                <div class="field field-userguide required">
+                    <div class="box">
+                        <a href="#" class="action primary">
+                            <span>User Guide</span>
+                        </a>
+                        <a href="#" class="action primary">
+                            <span>Release Notes</span>
+                        </a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <?php if ($block->getChildHtml('pager')) : ?>
+            <div class="customer-versions-toolbar toolbar bottom"><?= $block->getChildHtml('pager') ?></div>
+        <?php endif ?>
+    <?php else : ?>
+        <p class="empty"><?= $block->escapeHtml(__('Something wrong with this version.')) ?></p>
+    <?php endif;
+} catch (LocalizedException $e) {
+} catch (Exception $e) {
+} ?>

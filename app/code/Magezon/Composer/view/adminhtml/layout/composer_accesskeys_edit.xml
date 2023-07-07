@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * $magezon_composer_accesskeys_edit
+ * @copyright Copyright © ${commentsYear} ${CommentsCompanyName}. All rights reserved.
+ * @author    ${commentsUserEmail}
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magezon_Composer::css/styles.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="composer_accesskeys_form"/>
+        </referenceContainer>
+    </body>
+</page>

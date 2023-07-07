@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * composer_accesskeys_form
+ * @copyright Copyright © ${commentsYear} ${CommentsCompanyName}. All rights reserved.
+ * @author    ${commentsUserEmail}
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">composer_accesskeys_form.composer_accesskeys_form_data_source</item>
+            <item name="deps" xsi:type="string">composer_accesskeys_form.composer_accesskeys_form_data_source</item>
+        </item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="label" xsi:type="string" translate="true">Access Keys Form</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Magezon\Composer\Block\Adminhtml\AccessKeys\Edit\BackButton</item>
+            <item name="delete" xsi:type="string">Magezon\Composer\Block\Adminhtml\AccessKeys\Edit\DeleteButton</item>
+            <item name="save" xsi:type="string">Magezon\Composer\Block\Adminhtml\AccessKeys\Edit\SaveButton</item>
+            <item name="save_and_continue" xsi:type="string">Magezon\Composer\Block\Adminhtml\AccessKeys\Edit\SaveAndContinueButton</item>
+        </item>
+    </argument>
+    <dataSource name="composer_accesskeys_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magezon\Composer\Ui\DataProvider\AccessKeys\Form\DataProvider</argument>
+            <argument name="name" xsi:type="string">composer_accesskeys_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">access_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="*/*/save"/>
+                    <item name="validate_url" xsi:type="url" path="*/*/validate"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <fieldset name="main_fieldset">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Main Information</item>
+            </item>
+        </argument>
+        <field name="access_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">access_id</item>
+                </item>
+            </argument>
+        </field>
+        <field name="status" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="valuesForOptions" xsi:type="array">
+                        <item name="boolean" xsi:type="string">boolean</item>
+                    </item>
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enabled</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string">Key Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">name</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </field>
+        <container name="choose_customer_container" component="Magento_Ui/js/form/components/group" sortOrder="60">
+            <argument name="data" xsi:type="array">
+                <item name="type" xsi:type="string">container</item>
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">container</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string">Customer</item>
+                    <item name="dataScope" xsi:type="string"/>
+                    <item name="additionalClasses" xsi:type="string">admin__control-grouped-date pr-prs-wrap</item>
+                    <item name="breakLine" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <container name="choose_customer_button" component="Magento_Ui/js/form/components/button" sortOrder="10">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="formElement" xsi:type="string">container</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">composer_accesskeys_form.composer_accesskeys_form.main_fieldset.choose_customer</item>
+                                <item name="actionName" xsi:type="string">toggleModal</item>
+                            </item>
+                        </item>
+                        <item name="imports" xsi:type="array">
+                            <item name="title" xsi:type="string">${ $.provider }:data.customer_button_label</item>
+                        </item>
+                        <item name="additionalForGroup" xsi:type="boolean">true</item>
+                        <item name="displayArea" xsi:type="string">insideGroup</item>
+                        <item name="additionalClasses" xsi:type="string">admin__field-small</item>
+                    </item>
+                </argument>
+            </container>
+            <field name="entity_id" sortOrder="30" formElement="input" component="Magezon_Composer/js/form/field/choose-customer">
+                <settings>
+                    <imports>
+                        <link name="userChanges">${ $.provider }:${ $.dataProvider }</link>
+                        <link name="customerLabel">${ $.provider }:data.customer_label</link>
+                        <link name="customerLink">${ $.provider }:data.customer_link</link>
+                        <link name="customerEditUrl">${ $.provider }:data.customer_edit_url</link>
+                    </imports>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <elementTmpl>Magezon_Composer/form/element/link</elementTmpl>
+                    <notice>Please assign the a customer to the new key.</notice>
+                </settings>
+            </field>
+        </container>
+        <modal name="choose_customer">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string" translate="true">Assign Customer</option>
+                    <option name="buttons" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="text" xsi:type="string">Cancel</item>
+                            <item name="class" xsi:type="string">action-secondary</item>
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">${ $.name }</item>
+                                    <item name="actionName" xsi:type="string">actionCancel</item>
+                                </item>
+                            </item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="text" xsi:type="string" translate="true">Add</item>
+                            <item name="class" xsi:type="string">action-primary</item>
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">index = entity_id</item>
+                                    <item name="actionName" xsi:type="string">changeValue</item>
+                                </item>
+                                <item name="1" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">${ $.name }</item>
+                                    <item name="actionName" xsi:type="string">actionDone</item>
+                                </item>
+                            </item>
+                        </item>
+                    </option>
+                </options>
+            </settings>
+            <insertListing name="customer_listing">
+                <settings>
+                    <externalProvider>composer_customer_listing.composer_customer_listing_data_source</externalProvider>
+                    <loading>false</loading>
+                    <autoRender>true</autoRender>
+                    <ns>composer_customer_listing</ns>
+                    <exports>
+                        <link name="uuid">${ $.externalProvider }:params.entity_id</link>
+                    </exports>
+                    <imports>
+                        <link name="uuid">${ $.provider }:data.uuid</link>
+                    </imports>
+                </settings>
+            </insertListing>
+        </modal>
+        <!-- Add your fields here -->
+    </fieldset>
+</form>

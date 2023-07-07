@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Magezon_Composer::system_composer"
+             title="Composer Management"
+             translate="title"
+             module="Magezon_Composer"
+             sortOrder="1000" parent="Magento_Backend::system"
+             dependsOnModule="Magezon_Composer"
+             resource="Magezon_Manager::composer_management"/>
+        <add id="Magezon_Composer::accesskeys" title="Manage Access Keys" module="Magezon_Composer" sortOrder="1000" parent="Magezon_Composer::system_composer" resource="Magezon_Composer::accesskeys" action="composer/accesskeys" />
+        <add id="Magezon_Composer::packages" title="Manage Packages" module="Magezon_Composer" sortOrder="1000" parent="Magezon_Composer::system_composer" resource="Magezon_Composer::packages" action="composer/packages" />
+        <add id="Magezon_Composer::version" title="Manage Packages Versions" module="Magezon_Composer" sortOrder="1000" parent="Magezon_Composer::system_composer" resource="Magezon_Composer::version" action="composer/version" />
+        <add id="Magezon_Composer::customerpackages" title="Manage Customer Packages" module="Magezon_Composer" sortOrder="1000" parent="Magezon_Composer::system_composer" resource="Magezon_Composer::customerpackages" action="composer/customerpackages" />
+    </menu>
+</config>

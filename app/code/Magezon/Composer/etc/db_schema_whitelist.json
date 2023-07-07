@@ -1,0 +1,41 @@
+{
+    "mgz_package_group": {
+        "column": {
+            "group_id": true,
+            "name": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "mgz_package_accesskeys": {
+        "column": {
+            "access_id": true,
+            "name": true,
+            "entity_id": true,
+            "access_key": true,
+            "access_secret": true,
+            "status": true,
+            "created_at": true,
+            "modified_at": true,
+            "expire_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MGZ_PACKAGE_ACCESSKEYS_ENTITY_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    },
+    "mgz_package_group_customer": {
+        "column": {
+            "id": true,
+            "group_id": true,
+            "entity_id": true,
+            "name": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MGZ_PACKAGE_GROUP_CUSTOMER_GROUP_ID_MGZ_PACKAGE_GROUP_GROUP_ID": true,
+            "MGZ_PACKAGE_GROUP_CUSTOMER_ENTITY_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    }
+}
