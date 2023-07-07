@@ -35,5 +35,6 @@ tasks:
              sudo rabbitmqctl add_user guest guest;
              sudo rabbitmqctl set_user_tags guest administrator;
              sudo rabbitmqctl set_permissions -p / guest ".*" ".*" ".*";
+             cd /workspace/magento2gitpod && wget -c https://magento.mirror.hypernode.com/releases/magento-2.3.5.tar.gz;
   - name: "Terminal/SSH Start here"
     command: source /etc/lighthouse.conf;clear;echo "Good luck. Happy coding and testing!"
